@@ -54,8 +54,11 @@ as they are straightforward to process with NumPy and Pandas.
 2. Run the scripts sequentially or open the provided notebook.
 3. The execution will output statistical results (Mean Accuracy ± STD) over 3 independent runs and plot the training curves.
 
+
 ***
 ***
+***
+
 
 ## Phase 2: Optimization & Generalization
 
@@ -124,7 +127,12 @@ Different regularization and optimization techniques are applied on top of this 
    - Test accuracy results
    - Bias–Variance analysis plots showing the effect of model complexity on performance.
 
-======================================================================================================================================================================================================================================================================================================================================
+
+
+***
+***
+***
+
 
 ## Phase 3: Advanced Optimization
 
@@ -188,7 +196,12 @@ This phase continues to use the **Fashion-MNIST** dataset. For consistency, we r
    - **Summary Table**: Reporting Final Test Accuracy and Convergence Speed.
    - **Convergence Comparison**: A log-scale plot showing Newton-CG vs SGD performance.
 
-======================================================================================================================================================================================================================================================================================================================================
+
+
+***
+***
+***
+
 
 ## Phase 4: Final Model & Generalization Analysis
 
