@@ -54,8 +54,8 @@ as they are straightforward to process with NumPy and Pandas.
 2. Run the scripts sequentially or open the provided notebook.
 3. The execution will output statistical results (Mean Accuracy ± STD) over 3 independent runs and plot the training curves.
 
----
----
+***
+***
 
 ## Phase 2: Optimization & Generalization
 
