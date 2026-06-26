@@ -134,10 +134,10 @@ Different regularization and optimization techniques are applied on top of this 
 ***
 
 
-## Phase 3: Advanced Optimization
+# Phase 3: Advanced Optimization
 
-### Overview
-In this phase, we explore advanced optimization algorithms beyond standard SGD. We implement and compare different gradient-based optimizers and investigate second-order optimization methods (Newton's method).
+## Overview
+In this phase, we explore advanced optimization algorithms beyond standard SGD. We implement and compare different gradient-based optimizers and investigate second-order optimization methods (Newton's method) to deepen our understanding of loss landscape dynamics.
 
 This phase consists of the following tasks:
 - **Task 3-1:** Implementing and comparing various optimizers: **SGD with Momentum, Nesterov, AdaGrad, RMSprop, and Adam**.
@@ -146,55 +146,67 @@ This phase consists of the following tasks:
 
 ---
 
-### Requirements
+## Requirements
 The following libraries are required to run the code:
 ```bash
 pip install torch torchvision numpy pandas matplotlib scikit-learn
 ```
----
-
-### Dataset Setup
-This phase continues to use the **Fashion-MNIST** dataset. For consistency, we rely on the CSV format for easier processing with Pandas and NumPy.
-
-1. **Required Files:**
-   - Ensure the following files are located in your dataset directory:
-     - `fashion-mnist_train.csv`
-     - `fashion-mnist_test.csv`
-
-2. **Data Preparation:**
-   - **Normalization:** Pixel values are scaled to the range **[0, 1]**.
-   - **Vectorization:** Each 28x28 image is flattened into a **784-dimensional input vector**.
-   - **Loading:** The data loader is configured to handle the CSV structure efficiently, ensuring reproducibility across all optimizer experiments.
-
----
-### Implementation Details
-
-#### 🧠 Architecture
-- **Task 3-1:** We utilized a 3-layer MLP based on the optimal configurations identified in Phase 2:
-   - **Hidden Layers**: 3 layers with 256 neurons each.
-   - **Normalization**: Batch Normalization applied before the ReLU activation.
-   - **Initialization**: He Initialization for all weight matrices.
-   - **Optimizers**: A comparative study between SGD-M, Nesterov, AdaGrad, RMSprop, and Adam.
-
-- **Task 3-3:** A **TinyNet** (a simplified, low-parameter architecture) was implemented to specifically demonstrate the efficiency of Newton-CG in utilizing second-order curvature information.
-
-#### 📈 Key Observations
-- **Optimizer Comparison (Task 3-1):** Adaptive methods like Adam and RMSprop demonstrated significantly faster initial convergence. However, SGD with Momentum often showed better generalization on the validation set after fine-tuning the learning rate.
-- **Convergence Speed:** We measured efficiency by the number of epochs needed to reach an 85% validation accuracy threshold. The results highlighted that adaptive learning rates reduce the need for exhaustive manual tuning.
-- **Newton-CG vs SGD (Task 3-3):** Although Newton-CG is more computationally intensive per step, it requires far fewer iterations to converge. The log-scale loss plots clearly show its superior optimization trajectory compared to first-order SGD.
 
 ---
 
-### How to Run
-> **Note:** Before running any phase-specific tasks, ensure that you have executed the **"Required Libraries"** cell at the top of the notebook to import all necessary dependencies.
+## Dataset Setup
 
-1. Ensure the Fashion-MNIST dataset files are in the root directory.
-2. Run the `run_phase3()` function for Task 3-1 to compare optimizers and generate accuracy tables.
-3. Run the Newton-CG experiment script for Task 3-3 to compare convergence against SGD.
-4. The execution will automatically generate:
-   - **Loss Curves**: Comparing different optimizers on a single plot.
-   - **Summary Table**: Reporting Final Test Accuracy and Convergence Speed.
-   - **Convergence Comparison**: A log-scale plot showing Newton-CG vs SGD performance.
+This phase continues to use the **Fashion-MNIST** dataset. For consistency, we rely on the CSV format for easier processing with **Pandas** and **NumPy**.
+
+### Required Files
+Ensure the following files are located in your dataset directory:
+- `fashion-mnist_train.csv`
+- `fashion-mnist_test.csv`
+
+### Data Preparation
+- **Normalization:** Pixel values are scaled to the range **[0, 1]**.
+- **Vectorization:** Each 28×28 image is flattened into a **784-dimensional input vector**.
+- **Loading:** The data loader is configured to handle the CSV structure efficiently.
+
+---
+
+## Implementation Details
+
+### Architecture
+- **Task 3-1 (Main Model):** We utilized a **3-layer MLP** based on the optimal configurations identified in Phase 2:
+  - **Hidden Layers:** 3 layers with 256 neurons each
+  - **Normalization:** Batch Normalization applied before the ReLU activation
+  - **Initialization:** He Initialization for all weight matrices
+
+- **Task 3-3 (TinyNet):** A simplified, low-parameter architecture (**1 hidden layer with 10 neurons**) was implemented to demonstrate the utility of **Newton-CG** using **Hessian-vector products**.
+
+### Reproducibility & Robustness
+All experiments for each optimizer are conducted over **3 independent runs** using different random seeds (**42, 43, 44**). This protocol ensures that the reported results (**Mean ± Standard Deviation**) are statistically meaningful and not dependent on a single random initialization.
+
+---
+
+## Key Observations
+
+- **Optimizer Comparison (Task 3-1):** Adaptive methods like **Adam** and **RMSprop** demonstrated significantly faster initial convergence. The comparative results are derived from the **mean performance across 3 independent runs** to ensure reliability.
+
+- **Convergence Speed:** Efficiency was measured by the number of epochs needed to reach an **85% validation accuracy threshold**. Results showed that while adaptive methods are faster, **Nesterov** and **SGD with Momentum** provide strong final stability.
+
+- **Newton-CG vs SGD (Task 3-3):** While **Newton-CG** is theoretically attractive, the experiment highlighted its sensitivity in a deep learning context. Log-scale plots demonstrate that **SGD provides a more stable, monotonic convergence path**, whereas **Newton-CG** exhibited higher variance and sensitivity to numerical damping in the non-convex loss landscape.
+
+---
+
+## How to Run
+
+1. Ensure the **Fashion-MNIST** dataset files are in the dataset directory.
+
+2. Execute the **Phase 3 integrated script**:
+   - The `run_phase3()` function orchestrates the learning rate search and the triple-run statistical evaluation for all **5 optimizers**.
+   - The **Newton-CG** comparison experiment is handled via a dedicated script for `TinyNet`.
+
+3. The execution will automatically generate:
+   - **Validation Loss Curves:** Overlaid plots for all major optimizers
+   - **Summary Table:** Reporting **Mean ± STD** for Test Accuracy and **Epochs to 85%**
+   - **Newton-CG Comparison Plot:** A log-scale visualization comparing second-order and first-order convergence behavior
 
 
 
