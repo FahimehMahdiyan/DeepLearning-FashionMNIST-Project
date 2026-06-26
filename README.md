@@ -218,7 +218,7 @@ All experiments for each optimizer are conducted over **3 independent runs** usi
 ## Phase 4: Final Model & Generalization Analysis
 
 ### Overview
-In the final phase, we integrate the best-performing techniques from previous stages—including **He Initialization, Batch Normalization, Adam Optimization, and L2 Regularization**—to build a robust deep MLP. The goal is to find an optimal architecture through random search and perform a rigorous analysis of the model's generalization capabilities.
+In the final phase, we integrate the best-performing techniques from previous stages—including **He Initialization, Batch Normalization, Dropout, Adam Optimization, and L2 Regularization**—to build a robust deep MLP. The goal is to find an optimal architecture through random search and perform a rigorous analysis of the model's generalization capabilities.
 
 This phase consists of:
 - **Task 4-1:** Constructing a 5-layer deep network and optimizing its hyperparameters.
@@ -239,19 +239,19 @@ The final evaluation is conducted on the **Fashion-MNIST** dataset.
 #### 🧠 Winner Architecture (Random Search Result)
 After conducting a Random Search, the following 5-layer architecture was identified as the optimal configuration:
 - **Input Layer:** 784 neurons (28x28 images).
-- **Hidden Layer 1:** 512 neurons + BatchNorm + ReLU.
-- **Hidden Layer 2:** 512 neurons + BatchNorm + ReLU.
-- **Hidden Layer 3:** 512 neurons + BatchNorm + ReLU.
-- **Hidden Layer 4:** 128 neurons + BatchNorm + ReLU.
-- **Hidden Layer 5:** 512 neurons + BatchNorm + ReLU.
-- **Output Layer:** 10 neurons (Softmax Cross-Entropy).
+- **Hidden Layer 1:** 512 neurons + BatchNorm + ReLU + Dropout(0.2)
+- **Hidden Layer 2:** 512 neurons + BatchNorm + ReLU + Dropout(0.2)
+- **Hidden Layer 3:** 512 neurons + BatchNorm + ReLU + Dropout(0.2)
+- **Hidden Layer 4:** 128 neurons + BatchNorm + ReLU + Dropout(0.2)
+- **Hidden Layer 5:** 512 neurons + BatchNorm + ReLU + Dropout(0.2)
+- **Output Layer:** 10 neurons (Softmax Cross-Entropy)
 
 #### ⚙️ Optimized Hyperparameters
 To achieve maximum stability and accuracy, the following parameters were applied:
 - **Optimizer:** Adam
-- **Learning Rate:** 0.00017
+- **Learning Rate:** 0.00028
 - **Weight Initialization:** He Initialization (Kaiming Normal)
-- **Regularization:** Weight Decay ($1 \times 10^{-4}$)
+- **Regularization:** Weight Decay ($1 \times 10^{-4}$) + Dropout (Rate = 0.2)
 - **Training Duration:** 20 Epochs
 - **Batch Size:** 64
 
@@ -261,11 +261,11 @@ To ensure reliability, the winner architecture is trained **3 times** with diffe
 ---
 
 ### Key Observations
-1. **Generalization Gap:** The loss curves monitor the gap between training and validation. A narrow gap confirms that the combination of **BatchNorm** and **Weight Decay** successfully prevents overfitting despite the model's depth.
+1. **Generalization Gap:** The loss curves monitor the gap between training and validation. A relatively narrow gap confirms that the combination of **BatchNorm**, **Dropout**, and **Weight Decay** successfully controls overfitting despite the model's depth.
 2. **Bias-Variance Trade-off:** 
    - **Low Bias:** The 5-layer depth allows the model to capture high-level features of the Fashion-MNIST classes.
-   - **Variance Control:** Managed via L2 regularization, ensuring high accuracy on the unseen Test set.
-3. **Data Impact Analysis:** Reducing training samples to 10,000 would significantly increase **Variance**, leading to a wider generalization gap and requiring more aggressive regularization (like Dropout or higher Weight Decay).
+   - **Variance Control:** Managed through **L2 regularization** and **Dropout**, ensuring strong performance on the unseen Test set.
+3. **Data Impact Analysis:** Reducing training samples to 10,000 would significantly increase **Variance**, leading to a wider generalization gap and requiring stronger regularization.
 
 ---
 
